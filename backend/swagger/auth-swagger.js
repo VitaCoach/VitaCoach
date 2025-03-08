@@ -20,10 +20,10 @@
  *           type: string
  *           description: 사용자 비밀번호
  *         sex:
- *           type: ENUM
+ *           type: string
  *           description: 사용자 성별 ('MAN' 혹은 'WOMAN'으로 보내줘야함)
  *         birth:
- *           type: dateTime
+ *           type: string
  *           description: 사용자 생일
  */
 
