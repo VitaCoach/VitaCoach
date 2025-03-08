@@ -1,19 +1,57 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const UnsubscribedPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  // ✅ 구독 신청 API 호출 함수
+  const handleSubscribe = async (plan: string) => {
+    const token = localStorage.getItem("token"); // ✅ 로그인 토큰 가져오기
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      navigate("/LoginPage"); // ✅ 로그인 페이지로 이동
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/api/sub/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ plan: plan.toUpperCase() }), // ✅ 대문자로 변환하여 전달
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("구독이 성공적으로 완료되었습니다!");
+        navigate("/SubscribedPage"); // ✅ 구독 완료 후 이동
+      } else {
+        alert(data.message || "구독에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("구독 요청 중 오류 발생:", error);
+      alert("서버 오류가 발생했습니다.");
+    }
+  };
+
   return (
     <Container>
       <Title>고객님께 알맞는 플랜을 고르세요!</Title>
       <PlansGrid>
-        {plans.map((plan, index) => (
-          <PlanCard key={plan.name} className={index < 2 ? "top" : "bottom"}>
+        {plans.map((plan) => (
+          <PlanCard key={plan.name}>
             <PlanTitle>{plan.name}</PlanTitle>
             <PlanDivider />
             <PlanPrice>{plan.price}</PlanPrice>
-
             <PlanPeriod>per month</PlanPeriod>
             <PlanDescription>{plan.description}</PlanDescription>
+            <SubscribeButton onClick={() => handleSubscribe(plan.name)}>
+              이 플랜 선택
+            </SubscribeButton>
           </PlanCard>
         ))}
       </PlansGrid>
@@ -36,13 +74,13 @@ const Container = styled.div`
 const Title = styled.h2`
   font-size: 32px;
   color: #2c3e50;
-  font-weight: 900; /* ✅ 훨씬 더 진하게 */
+  font-weight: 900;
   margin-bottom: 30px;
 `;
 
 const PlansGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* ✅ 2열 정렬 (2개 + 2개) */
+  grid-template-columns: repeat(2, 1fr);
   gap: 25px;
   justify-content: center;
 `;
@@ -53,9 +91,7 @@ const PlanCard = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 25px;
   text-align: center;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   border: 2px solid transparent;
-
   &:hover {
     transform: scale(1.07);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -90,13 +126,31 @@ const PlanDescription = styled.p`
   line-height: 1.6;
   white-space: pre-line;
 `;
+
 const PlanDivider = styled.div`
   width: 50%;
   height: 1px;
-  background-color: #ddd; /* ✅ 연한 회색 구분선 */
-  margin: 10px auto; /* ✅ 중앙 정렬 */
+  background-color: #ddd;
+  margin: 10px auto;
 `;
 
+const SubscribeButton = styled.button`
+  background-color: #0669ba;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+
+  &:hover {
+    background-color: #004a85;
+  }
+`;
+
+// ✅ 구독 가능한 플랜 목록
 const plans = [
   {
     name: "Bronze",

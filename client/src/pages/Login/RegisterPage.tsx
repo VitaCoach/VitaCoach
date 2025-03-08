@@ -15,12 +15,10 @@ const RegisterPage: React.FC = () => {
 
   const [error, setError] = useState("");
 
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +31,7 @@ const RegisterPage: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({...formData, birth: birthDate }),
+        body: JSON.stringify({ ...formData, birth: birthDate }),
       });
 
       if (response.status === 201) {
@@ -49,7 +47,6 @@ const RegisterPage: React.FC = () => {
       console.error("회원가입 오류:", err);
       setError("네트워크 오류가 발생했습니다.");
     }
-
   };
 
   return (
@@ -71,7 +68,6 @@ const RegisterPage: React.FC = () => {
             />
             <Icon>🆔</Icon>
           </InputWrapper>
-
 
           <Label>이름</Label>
           <InputWrapper>
@@ -116,10 +112,8 @@ const RegisterPage: React.FC = () => {
           <InputWrapper>
             <Input
               type="date"
-
               name="birth"
               value={formData.birth}
-
               onChange={handleChange}
               required
             />
@@ -130,11 +124,9 @@ const RegisterPage: React.FC = () => {
             <GenderOption>
               <input
                 type="radio"
-
                 name="sex"
                 value="WOMAN"
                 checked={formData.sex === "WOMAN"}
-
                 onChange={handleChange}
               />
               여성
@@ -142,11 +134,9 @@ const RegisterPage: React.FC = () => {
             <GenderOption>
               <input
                 type="radio"
-
                 name="sex"
                 value="MAN"
                 checked={formData.sex === "MAN"}
-
                 onChange={handleChange}
               />
               남성
@@ -155,7 +145,6 @@ const RegisterPage: React.FC = () => {
 
           <RegisterButton type="submit">가입 완료</RegisterButton>
         </Form>
-
       </RegisterBox>
     </Container>
   );
@@ -163,16 +152,12 @@ const RegisterPage: React.FC = () => {
 
 export default RegisterPage;
 
-
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding-top: 10vh;
   min-height: 100vh;
-
-  background-color: #f8f9fa;
-
 `;
 
 const RegisterBox = styled.div`
@@ -182,7 +167,6 @@ const RegisterBox = styled.div`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 400px;
   text-align: center;
-
 `;
 
 const Title = styled.h2`
@@ -192,13 +176,11 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-
 const ErrorMessage = styled.p`
   color: red;
   font-size: 14px;
   margin-bottom: 10px;
 `;
-
 
 const Form = styled.form`
   display: flex;

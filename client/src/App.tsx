@@ -4,6 +4,7 @@ import Layout from "./components/Layout.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import FeaturesPage from "./pages/FeaturesPage.tsx";
 import SubscriptionPage from "./pages/Subscription/SubscriptionPage.tsx";
+// import SubscriptionStatus from "./pages/Subscription/SubscriptionStatus.tsx";
 import PromotionPage from "./pages/Promotion/PromotionPage.tsx";
 import LoginPage from "./pages/Login/LoginPage.tsx";
 import RegisterPage from "./pages/Login/RegisterPage.tsx";

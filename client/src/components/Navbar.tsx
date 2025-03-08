@@ -1,17 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../assets/logo.png"; // ✅ 로고 불러오기
+import logo from "../assets/logo.png"; //
 
 const Navbar: React.FC = () => {
   return (
     <NavBar>
       <NavContainer>
-        {/* ✅ 로고 (왼쪽 정렬) */}
+        {/* 로고 (왼쪽 정렬) */}
         <LogoLink to="/">
           <Logo src={logo} alt="Logo" />
+          <BrandName>VITACOACH</BrandName>
         </LogoLink>
-        {/* ✅ 네비게이션 링크 (오른쪽 정렬) */}
+        {/* 네비게이션 링크 (오른쪽 정렬) */}
         <NavLinks>
           <NavItem to="/LoginPage">로그인</NavItem>
           <NavItem to="/RegisterPage">회원 가입</NavItem>
@@ -25,7 +26,7 @@ const Navbar: React.FC = () => {
 
 export default Navbar;
 
-/* ✅ Styled Components */
+/* Styled Components */
 const NavBar = styled.nav`
   position: fixed;
   top: 0;
@@ -48,6 +49,7 @@ const NavContainer = styled.div`
 const LogoLink = styled(Link)`
   display: flex;
   align-items: center;
+  text-decoration: none;
 `;
 
 const Logo = styled.img`
@@ -71,4 +73,14 @@ const NavItem = styled(Link)`
   &:focus {
     font-weight: bold;
   }
+`;
+
+const BrandName = styled.span`
+  font-size: 22px;
+  font-weight: bold;
+  color: #003f73; /* 
+  letter-spacing: 3px; /* 
+  font-family: "Arial", sans-serif;
+  text-transform: uppercase; 
+  text-decoration: none;
 `;
