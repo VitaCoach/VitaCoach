@@ -46,8 +46,8 @@ model counsel{
   reservation_date    DateTime
   reservation_time    DateTime
 
-  user                user            @relation(fields: [client], references: [id])
-  expert              expert          @relation(fields: [counselor], references: [id])
+  user                user            @relation(fields: [client], references: [id], onDelete: Cascade)
+  expert              expert          @relation(fields: [counselor], references: [id], onDelete: Cascade)
 }
 
 //상품 테이블
