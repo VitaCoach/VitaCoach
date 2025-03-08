@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//사용자 테이블
+model User{
+  id                  Int             @id @default(autoincrement())
+  name                String
+  sex                 Sex
+  phone               String
+  password            String
+  birth               DateTime
+  subscription        Subscription
+
+  counsel             Counsel[]       //유저:상담 = 1:N
+  order               Order[]         //유저:결제 = 1:N
+}
+
+//전문가 테이블
+model Expert{
+  id                  Int             @id @default(autoincrement())
+  name                String        
+  type                ExpertType      //전문가 타입
+  rate                Int             //평점
+  intro               String          //소개
+
+  counsel             Counsel[]       //전문가:상담 = 1:N
+}
+
+//상담 테이블
+model Counsel{
+  id                  Int             @id @default(autoincrement())
+  counselor           Int             //FK (Expert id 참조)
+  client              Int             //
+  reservation_date    DateTime
+  reservation_time    DateTime
+
+  user                User            @relation(fields: [client], references: [id])
+  expert              Expert          @relation(fields: [counselor], references: [id])
+}
+
+//상품 테이블
+model Product{
+  id                  Int             @id @default(autoincrement())
+  name                String
+  price               Int
+  maxLimit            Int             //일일 섭취량 상한
+  minLimit            Int             //일일 섭취량 하한
+  scale               String          //단위
+  type                ProductType     //상품 종류
+
+  productFunction     productFunction[]
+  OrderItem           OrderItem[]
+}
+
+//기능 테이블
+model Function{
+  id                  Int             @id @default(autoincrement())
+  function            String
+
+  productFunction     productFunction[]     //상품 : 기능 = M:N
+}
+
+//상품 기능 테이블 (상품 : 기능 = M : N 관계)
+model productFunction{
+  function_id         Int
+  product_id          Int
+  
+  function            Function        @relation(fields: [function_id], references: [id])
+  product             Product         @relation(fields: [product_id], references: [id])
+
+  @@id([function_id, product_id])
+}
+
+//결제 테이블
+model Order{
+  id                  Int             @id @default(autoincrement())
+  buyer               Int
+  status              OrderStatus     //결제 상태
+  total_price         Int
+  created_at          DateTime        @default(now())         //결제시간
+
+  user                User            @relation(fields: [buyer], references: [id])
+
+  OrderItem           OrderItem[]     //결제 : 각 결제상품 = 1:N
+}
+
+//각 결제 상품 테이블
+model OrderItem{
+  pay_id              Int
+  product_id          Int
+  quantity            Int
+  price               Int
+
+  order               Order           @relation(fields: [pay_id], references: [id])
+  product             Product         @relation(fields: [product_id], references: [id])
+
+  @@id([pay_id, product_id])
+}
+
+//성별
+enum Sex{
+  MAN         //남자
+  WOMAN       //여자
+}
+
+//구독
+enum Subscription{
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+//전문가 타입
+enum ExpertType{
+  DOCTOR              // 의사
+  NUTRITIONIST        // 영양사
+  PHARMACIST          // 약사
+}
+
+//상품 종류
+enum ProductType{
+  TYPE1               // 개별 인정형
+  TYPE2               // 고시형
+}
+
+//결제 상태
+enum OrderStatus{
+  PENDING             // 결제 대기중
+  SUCCEEDED           // 결제 완료
+  FAILED              // 결제 취소 혹은 실패
+}
