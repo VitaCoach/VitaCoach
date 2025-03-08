@@ -14,44 +14,44 @@ datasource db {
 }
 
 //사용자 테이블
-model User{
-  id                  Int             @id @default(autoincrement())
+model user{
+  id                  String          @id
   name                String
   sex                 Sex
   phone               String
   password            String
   birth               DateTime
-  subscription        Subscription
+  subscription        Subscription    @default(FREE)  // 기본값: FREE
 
-  counsel             Counsel[]       //유저:상담 = 1:N
-  order               Order[]         //유저:결제 = 1:N
+  counsel             counsel[]       //유저:상담 = 1:N
+  order               order[]         //유저:결제 = 1:N
 }
 
 //전문가 테이블
-model Expert{
+model expert{
   id                  Int             @id @default(autoincrement())
   name                String        
   type                ExpertType      //전문가 타입
   rate                Int             //평점
   intro               String          //소개
 
-  counsel             Counsel[]       //전문가:상담 = 1:N
+  counsel             counsel[]       //전문가:상담 = 1:N
 }
 
 //상담 테이블
-model Counsel{
+model counsel{
   id                  Int             @id @default(autoincrement())
   counselor           Int             //FK (Expert id 참조)
-  client              Int             //
+  client              String          //FK (User id 참조)
   reservation_date    DateTime
   reservation_time    DateTime
 
-  user                User            @relation(fields: [client], references: [id])
-  expert              Expert          @relation(fields: [counselor], references: [id])
+  user                user            @relation(fields: [client], references: [id])
+  expert              expert          @relation(fields: [counselor], references: [id])
 }
 
 //상품 테이블
-model Product{
+model product{
   id                  Int             @id @default(autoincrement())
   name                String
   price               Int
@@ -60,51 +60,51 @@ model Product{
   scale               String          //단위
   type                ProductType     //상품 종류
 
-  productFunction     productFunction[]
-  OrderItem           OrderItem[]
+  productCategory     productCategory[]
+  orderItem           orderItem[]
 }
 
 //기능 테이블
-model Function{
+model category{
   id                  Int             @id @default(autoincrement())
-  function            String
+  category            String
 
-  productFunction     productFunction[]     //상품 : 기능 = M:N
+  productCategory     productCategory[]     //상품 : 기능 = M:N
 }
 
 //상품 기능 테이블 (상품 : 기능 = M : N 관계)
-model productFunction{
-  function_id         Int
+model productCategory{
+  category_id         Int
   product_id          Int
   
-  function            Function        @relation(fields: [function_id], references: [id])
-  product             Product         @relation(fields: [product_id], references: [id])
+  category            category        @relation(fields: [category_id], references: [id])
+  product             product         @relation(fields: [product_id], references: [id])
 
-  @@id([function_id, product_id])
+  @@id([category_id, product_id])
 }
 
 //결제 테이블
-model Order{
+model order{
   id                  Int             @id @default(autoincrement())
-  buyer               Int
+  buyer               String
   status              OrderStatus     //결제 상태
   total_price         Int
   created_at          DateTime        @default(now())         //결제시간
 
-  user                User            @relation(fields: [buyer], references: [id])
+  user                user            @relation(fields: [buyer], references: [id])
 
-  OrderItem           OrderItem[]     //결제 : 각 결제상품 = 1:N
+  orderItem           orderItem[]     //결제 : 각 결제상품 = 1:N
 }
 
 //각 결제 상품 테이블
-model OrderItem{
+model orderItem{
   pay_id              Int
   product_id          Int
   quantity            Int
   price               Int
 
-  order               Order           @relation(fields: [pay_id], references: [id])
-  product             Product         @relation(fields: [product_id], references: [id])
+  order               order           @relation(fields: [pay_id], references: [id])
+  product             product         @relation(fields: [product_id], references: [id])
 
   @@id([pay_id, product_id])
 }
@@ -117,6 +117,7 @@ enum Sex{
 
 //구독
 enum Subscription{
+  FREE
   BRONZE
   SILVER
   GOLD
