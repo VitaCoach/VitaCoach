@@ -2,7 +2,7 @@
 CREATE TYPE "Sex" AS ENUM ('MAN', 'WOMAN');
 
 -- CreateEnum
-CREATE TYPE "Subscription" AS ENUM ('BRONZE', 'SILVER', 'GOLD', 'PLATINUM');
+CREATE TYPE "Subscription" AS ENUM ('FREE', 'BRONZE', 'SILVER', 'GOLD', 'PLATINUM');
 
 -- CreateEnum
 CREATE TYPE "ExpertType" AS ENUM ('DOCTOR', 'NUTRITIONIST', 'PHARMACIST');
@@ -15,13 +15,12 @@ CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'SUCCEEDED', 'FAILED');
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
     "sex" "Sex" NOT NULL,
     "phone" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "birth" TIMESTAMP(3) NOT NULL,
-    "subscription" "Subscription" NOT NULL,
+    "subscription" "Subscription" NOT NULL DEFAULT 'FREE',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -41,7 +40,7 @@ CREATE TABLE "Expert" (
 CREATE TABLE "Counsel" (
     "id" SERIAL NOT NULL,
     "counselor" INTEGER NOT NULL,
-    "client" INTEGER NOT NULL,
+    "client" TEXT NOT NULL,
     "reservation_date" TIMESTAMP(3) NOT NULL,
     "reservation_time" TIMESTAMP(3) NOT NULL,
 
@@ -80,7 +79,7 @@ CREATE TABLE "productFunction" (
 -- CreateTable
 CREATE TABLE "Order" (
     "id" SERIAL NOT NULL,
-    "buyer" INTEGER NOT NULL,
+    "buyer" TEXT NOT NULL,
     "status" "OrderStatus" NOT NULL,
     "total_price" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
