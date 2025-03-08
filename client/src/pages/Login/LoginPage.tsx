@@ -43,11 +43,14 @@ const LoginPage: React.FC = () => {
     <Container>
       <LoginBox>
         <Title>로그인</Title>
+
         {error && <ErrorMessage>{error}</ErrorMessage>}
+
         <Form onSubmit={handleSubmit}>
           <Label>아이디</Label>
           <InputWrapper>
             <Input
+
               type="text"
               placeholder="아이디 입력"
               value={id}
@@ -55,6 +58,7 @@ const LoginPage: React.FC = () => {
               required
             />
             <Icon>🆔</Icon>
+
           </InputWrapper>
 
           <Label>비밀번호</Label>
@@ -73,7 +77,9 @@ const LoginPage: React.FC = () => {
         </Form>
 
         <RegisterLink>
+
           계정이 없으신가요? <a href="/RegisterPage">가입하기</a>
+
         </RegisterLink>
       </LoginBox>
     </Container>
@@ -107,11 +113,13 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
+
 const ErrorMessage = styled.p`
   color: red;
   font-size: 14px;
   margin-bottom: 10px;
 `;
+
 
 const Form = styled.form`
   display: flex;
