@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const SubscriptionPage: React.FC = () => {
+const UnsubscribedPage: React.FC = () => {
   return (
     <Container>
       <Title>고객님께 알맞는 플랜을 고르세요!</Title>
@@ -21,7 +21,7 @@ const SubscriptionPage: React.FC = () => {
   );
 };
 
-export default SubscriptionPage;
+export default UnsubscribedPage;
 
 /* ✅ Styled Components */
 const Container = styled.div`
