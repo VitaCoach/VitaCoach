@@ -28,7 +28,8 @@ const swaggerOptions = {
         //각 라우터의 Swagger 문서 파일을 통합함
         path.join(__dirname, '../swagger/user-swagger.js'),
         path.join(__dirname, '../swagger/product-swagger.js'),
-        path.join(__dirname, '../swagger/auth-swagger.js'),
+        path.join(__dirname, '../swagger/auth-swagger.js'),         //로그인,회원가입
+        path.join(__dirname, '../swagger/sub-swagger.js'),          //구독관련
     ],
     security: [
         {

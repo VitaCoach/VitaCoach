@@ -57,7 +57,7 @@ const userLogin = async(req, res, next) => {
             sameSite: 'strict',     //CSRF 방지
         });
 
-        res.status(200).json({message: 'Login successful'});
+        res.status(200).json({message: 'Login successful', token: token});
     }catch(error){
         next(error);
     }
