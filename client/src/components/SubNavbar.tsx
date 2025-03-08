@@ -1,29 +1,74 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import styled from "styled-components";
 
 const SubNavbar: React.FC = () => {
+  const location = useLocation(); // ✅ 현재 경로 가져오기
+
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: "50px", // 첫 번째 네비바 아래에 위치
-        width: "100%",
-        backgroundColor: "#d9ead3",
-        padding: "10px 0",
-        boxShadow: "0px 2px 5px rgba(0,0,0,0.1)",
-        zIndex: 999,
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
-        <Link to="/category1">건강 기능 식품이란?</Link>
-        <Link to="/category2">기능별 제품</Link>
-        <Link to="/category3">추천해주세요!</Link>
-        <Link to="/category4">비대면 상담</Link>
-        <Link to="/category5">구독 및 플랜</Link>
-        <Link to="/category6">프로모션</Link>
-      </div>
-    </div>
+    <SubNavBar>
+      <NavContainer>
+        <NavItem to="/" $active={location.pathname === "/"}>
+          건강 기능 식품이란?
+        </NavItem>
+        <NavItem
+          to="/FeaturesPage"
+          $active={location.pathname === "/FeaturesPage"}
+        >
+          기능별 제품
+        </NavItem>
+        <NavItem to="/category3" $active={location.pathname === "/category3"}>
+          추천해주세요!
+        </NavItem>
+        <NavItem to="/category4" $active={location.pathname === "/category4"}>
+          비대면 상담
+        </NavItem>
+        <NavItem
+          to="/SubscriptionPage"
+          $active={location.pathname === "/SubscriptionPage"}
+        >
+          구독 및 플랜
+        </NavItem>
+        <NavItem to="/category6" $active={location.pathname === "/category6"}>
+          프로모션
+        </NavItem>
+      </NavContainer>
+    </SubNavBar>
   );
 };
 
 export default SubNavbar;
+
+/* ✅ Styled Components */
+const SubNavBar = styled.div`
+  position: fixed;
+  top: 60px;
+  width: 100%;
+  height: 70px;
+  background-color: #7dbed2;
+  padding: 15px 0px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+`;
+
+const NavContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+`;
+
+/* ✅ 현재 페이지에 있을 경우 스타일 변경 */
+const NavItem = styled(Link)<{ $active: boolean }>`
+  color: ${(props) => (props.$active ? "#000000" : "#ffffff")};
+  text-decoration: none;
+  font-size: 23px;
+  font-weight: ${(props) => (props.$active ? "bold" : "normal")};
+  transition: all 0.3s ease-in-out;
+
+  &:hover,
+  &:focus {
+    color: #000000;
+    font-weight: bold;
+  }
+`;
