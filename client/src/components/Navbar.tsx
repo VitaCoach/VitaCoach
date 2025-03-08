@@ -13,8 +13,8 @@ const Navbar: React.FC = () => {
         </LogoLink>
         {/* ✅ 네비게이션 링크 (오른쪽 정렬) */}
         <NavLinks>
-          <NavItem to="/login">로그인</NavItem>
-          <NavItem to="/register">회원 가입</NavItem>
+          <NavItem to="/LoginPage">로그인</NavItem>
+          <NavItem to="/RegisterPage">회원 가입</NavItem>
           <NavItem to="/mypage">마이 페이지</NavItem>
           <NavItem to="/cart">장바구니</NavItem>
         </NavLinks>

@@ -29,7 +29,10 @@ const SubNavbar: React.FC = () => {
         >
           구독 및 플랜
         </NavItem>
-        <NavItem to="/category6" $active={location.pathname === "/category6"}>
+        <NavItem
+          to="/PromotionPage"
+          $active={location.pathname === "/PromotionPage"}
+        >
           프로모션
         </NavItem>
       </NavContainer>
