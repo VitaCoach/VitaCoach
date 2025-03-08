@@ -29,7 +29,8 @@ const swaggerOptions = {
         path.join(__dirname, '../swagger/user-swagger.js'),
         path.join(__dirname, '../swagger/product-swagger.js'),
         path.join(__dirname, '../swagger/auth-swagger.js'),         //로그인,회원가입
-        path.join(__dirname, '../swagger/sub-swagger.js'),          //구독관련
+        path.join(__dirname, '../swagger/sub-swagger.js'),          //구독 관련
+        path.join(__dirname, '../swagger/counsel-swagger.js'),      //상담 관련
     ],
     security: [
         {
