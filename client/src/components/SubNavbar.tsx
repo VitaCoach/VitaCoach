@@ -20,7 +20,10 @@ const SubNavbar: React.FC = () => {
         <NavItem to="/category3" $active={location.pathname === "/category3"}>
           추천해주세요!
         </NavItem>
-        <NavItem to="/category4" $active={location.pathname === "/category4"}>
+        <NavItem
+          to="/VirtualConsulting"
+          $active={location.pathname === "/VirtualConsulting"}
+        >
           비대면 상담
         </NavItem>
         <NavItem
