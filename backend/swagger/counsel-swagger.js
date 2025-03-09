@@ -173,7 +173,7 @@
  *                   description: 전문가의 이름
  *                 type:
  *                   type: string
- *                   description: 전문가의 직종 (예: 의사, 영양사 등)
+ *                   description: "전문가의 직종 (예: 의사, 영양사 등)"
  *                 rate:
  *                   type: integer
  *                   description: 전문가의 평점

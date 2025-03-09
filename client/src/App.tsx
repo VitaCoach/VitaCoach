@@ -11,7 +11,7 @@ import RegisterPage from "./pages/Login/RegisterPage.tsx";
 // import BlogsPage from './pages/BlogsPage';
 // import LoginPage from './pages/LoginPage';
 // import RegisterPage from './pages/RegisterPage';
-// import MyPage from './pages/MyPage';
+import MyPage from "./pages/MyPage/MyPage.tsx";
 // import CartPage from './pages/CartPage';
 
 const App: React.FC = () => {
@@ -25,6 +25,7 @@ const App: React.FC = () => {
         <Route path="/LoginPage" element={<LoginPage />} />
         <Route path="/RegisterPage" element={<RegisterPage />} />
         <Route path="/VirtualConsulting" element={<VirtualConsulting />} />
+        <Route path="/MyPage" element={<MyPage />} />
       </Routes>
     </Layout>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 // 전문가 타입 정의
 interface Expert {
@@ -17,21 +17,17 @@ const VirtualConsulting: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("NUTRITIONIST");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  useEffect(() => {
-    fetchExperts(activeTab);
-  }, [activeTab]);
-
-  const fetchExperts = async (type: string) => {
+  const fetchExperts = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         console.error("No token found!");
         return;
       }
-      console.log(`요청 중: /api/counsel/list?type=${type}`);
+      console.log(`요청 중: /api/counsel/list?type=${activeTab}`);
       console.log("포함된 토큰:", token);
 
-      const response = await fetch(`/api/counsel/list?type=${type}`, {
+      const response = await fetch(`/api/counsel/list?type=${activeTab}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -48,13 +44,14 @@ const VirtualConsulting: React.FC = () => {
 
       setExperts(data);
       setFilteredExperts(data);
-
-      console.log("🟢 상태 업데이트 후 experts:", experts);
-      console.log("🟢 상태 업데이트 후 filteredExperts:", filteredExperts);
     } catch (error) {
-      console.error("❌ Error fetching experts:", error);
+      console.error("Error fetching experts:", error);
     }
-  };
+  }, [activeTab]);
+
+  useEffect(() => {
+    fetchExperts();
+  }, [fetchExperts]); // fetchExperts 자체를 의존성 배열에 추가
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase();
@@ -93,14 +90,18 @@ const VirtualConsulting: React.FC = () => {
         onChange={handleSearch}
       />
       <ExpertList>
-        {filteredExperts.map((expert) => (
-          <ExpertCard key={expert.id}>
-            <ExpertImage src={expert.imageUrl} alt={expert.name} />
-            <ExpertName>{expert.name}</ExpertName>
-            <Rating>⭐ {expert.rate} out of 5</Rating>
-            <ExpertIntro>{expert.intro}</ExpertIntro>
-          </ExpertCard>
-        ))}
+        {filteredExperts.length > 0 ? (
+          filteredExperts.map((expert) => (
+            <ExpertCard key={expert.id}>
+              <ExpertImage src={expert.imageUrl} alt={expert.name} />
+              <ExpertName>{expert.name}</ExpertName>
+              <Rating>⭐ {expert.rate} out of 5</Rating>
+              <ExpertIntro>{expert.intro}</ExpertIntro>
+            </ExpertCard>
+          ))
+        ) : (
+          <NoData>전문가를 찾을 수 없습니다.</NoData> // 빈 배열일 때 메시지 표시
+        )}
       </ExpertList>
     </Container>
   );
@@ -181,4 +182,11 @@ const ExpertIntro = styled.p`
 const Rating = styled.p`
   font-size: 14px;
   color: #ffb400;
+`;
+
+const NoData = styled.p`
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  margin-top: 20px;
 `;
