@@ -12,6 +12,7 @@ const getCategoryProduct = async(category) => {
     });
 
     //데이터 전처리 필요 & 이미지 api로 이미지 검색 필요
+
     return categoryProductList;
 };
 
