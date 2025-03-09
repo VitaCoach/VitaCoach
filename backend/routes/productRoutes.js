@@ -9,4 +9,7 @@ router.get('/:category', productController.getProductList);
 //제품 상세
 router.get('/detail/:productId', productController.getProductInfo);
 
+//제품 구매
+router.post('/buy', productController.buyProduct);
+
 module.exports = router;

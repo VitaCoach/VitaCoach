@@ -26,7 +26,28 @@ const getProductInfo = async(req, res, next) => {
     }
 };
 
+/**
+ * 제품 구매 등록
+ */
+const buyProduct = async(req, res, next) => {
+    const { productId, quantity } = req.body;
+    const userId = req.user.userId;
+    try{
+        productService.buyProduct(userId, productId, quantity);
+        res.json({message: 'Payment Success'});
+    }catch(error){
+        next(error);
+    }
+};
+
+/**
+ * 장바구니 등록
+ */
+
+
+
 module.exports = {
     getProductList,
-    getProductInfo
+    getProductInfo,
+    buyProduct
 }
