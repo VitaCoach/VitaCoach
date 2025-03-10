@@ -25,7 +25,7 @@ const getProductInfo = async(productId) => {
 };
 
 /**
- * 제품 구매 등록
+ * 제품 구매 등록 - 바로구매(상품 한 종류)
  */
 const buyProduct = async(userId, productId, quantity) => {
     const product = await prisma.product.findUnique({where: {id: productId}});
@@ -34,7 +34,14 @@ const buyProduct = async(userId, productId, quantity) => {
         data:{
             buyer: userId,
             total_price: quantity * product.price,
-            status: 'SUCCEEDED'
+            status: 'SUCCEEDED',
+            orderItem: {
+                create: [{
+                    product_id: productId,
+                    quantity: 2,
+                    price: 20000,
+                }]
+            }
         }
     });
 };
