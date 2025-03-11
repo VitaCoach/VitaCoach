@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -7,6 +7,14 @@ const LoginPage: React.FC = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  // ✅ 로그인 상태 확인 (localStorage에서 토큰 확인)
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/"); // ✅ 이미 로그인된 상태면 홈으로 이동
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,13 +26,13 @@ const LoginPage: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, password }), //
+        body: JSON.stringify({ id, password }),
       });
 
       const data = await response.json();
 
       if (response.status === 200) {
-        // JWT 토큰 저장 (localStorage)
+        // ✅ JWT 토큰 저장 (로그인 상태 유지)
         localStorage.setItem("token", data.token);
         alert("로그인 성공!");
         navigate("/"); // 로그인 성공 시 이동할 페이지 설정
@@ -50,7 +58,6 @@ const LoginPage: React.FC = () => {
           <Label>아이디</Label>
           <InputWrapper>
             <Input
-
               type="text"
               placeholder="아이디 입력"
               value={id}
@@ -58,7 +65,6 @@ const LoginPage: React.FC = () => {
               required
             />
             <Icon>🆔</Icon>
-
           </InputWrapper>
 
           <Label>비밀번호</Label>
@@ -77,9 +83,7 @@ const LoginPage: React.FC = () => {
         </Form>
 
         <RegisterLink>
-
           계정이 없으신가요? <a href="/RegisterPage">가입하기</a>
-
         </RegisterLink>
       </LoginBox>
     </Container>
@@ -113,13 +117,11 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-
 const ErrorMessage = styled.p`
   color: red;
   font-size: 14px;
   margin-bottom: 10px;
 `;
-
 
 const Form = styled.form`
   display: flex;

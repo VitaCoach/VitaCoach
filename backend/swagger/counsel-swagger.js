@@ -1,8 +1,8 @@
 /**
  * @swagger
  * tags:
- *   name: Counsel
- *   description: API for counsel related operations
+ *   - name: Counsel
+ *     description: 상담과 관련된 모든 API
  */
 
 /**
@@ -47,73 +47,12 @@
  *                     type: string
  *                     example: "건강기능 식품계의 나야, 들기름!"
  *                   imageUrl:
- *                     type: String
+ *                     type: string
  *                     example: "https://randomuser.me/api/portraits/women/65.jpg"
  *       400:
  *         description: 잘못된 요청 (type이 제공되지 않음)
  *       500:
  *         description: 서버 오류
- */
-
-/**
- * @swagger
- * /findExpert:
- *   get:
- *     summary: 전문가 찾기
- *     tags: [Expert]
- *     description: 이름을 기준으로 전문가 정보를 검색합니다.
- *     parameters:
- *       - in: query
- *         name: name
- *         required: true
- *         schema:
- *           type: string
- *         description: 찾고 싶은 전문가의 이름
- *     responses:
- *       200:
- *         description: 성공적으로 전문가 정보를 반환
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     example: 1
- *                   name:
- *                     type: string
- *                     example: "홍길동"
- *                   type:
- *                     type: string
- *                     example: "심리 상담사"
- *                   rate:
- *                     type: integer
- *                     example: 5
- *                   intro:
- *                     type: string
- *                     example: "20년 경력의 심리 상담 전문가입니다."
- *       400:
- *         description: 잘못된 요청 형식
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: "Invalid query parameter"
- *       500:
- *         description: 서버 내부 오류
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: "Internal server error"
  */
 
 /**

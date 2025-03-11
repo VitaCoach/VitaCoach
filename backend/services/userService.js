@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const { subscribe } = require('../app');
 const prisma = new PrismaClient();
 
 /**
@@ -24,7 +25,23 @@ const updatePlan = async(userId, plan) => {
     });
 };
 
+/**
+ * 마이 프로필 정보 가져오기
+ */
+const getMyInfo = async(userId) => {
+    const myInfo = await prisma.user.findUnique({where: {id: userId}});
+
+    const formattedMyInfo = {
+        name: myInfo.name,
+        phone: myInfo.phone,
+        subscribe: myInfo.subscription
+    };
+
+    return formattedMyInfo;
+}
+
 module.exports = {
     getUserSubscription,
     updatePlan,
+    getMyInfo
 }
