@@ -22,7 +22,9 @@ model user{
   password            String
   birth               DateTime
   subscription        Subscription    @default(FREE)  // 기본값: FREE
+  cartId              String?         @unique
 
+  cart                cart?           //유저:장바구니 = 1:1
   counsel             counsel[]       //유저:상담 = 1:N
   order               order[]         //유저:결제 = 1:N
 }
@@ -62,6 +64,7 @@ model product{
 
   productCategory     productCategory[]
   orderItem           orderItem[]
+  cartItem            cartItem[]      //상품:장바구니 = N:M
 }
 
 //기능 테이블
@@ -107,6 +110,27 @@ model orderItem{
   product             product         @relation(fields: [product_id], references: [id])
 
   @@id([pay_id, product_id])
+}
+
+//장바구니 테이블
+model cart{
+  id                  Int             @id @default(autoincrement())
+  owner               String          @unique
+
+  user                user?           @relation(fields: [owner], references: [id], onDelete: Cascade)
+  cartItem            cartItem[]      //상품:장바구니 = M:N
+}
+
+//상품-장바구니 관계 테이블
+model cartItem{
+  cartId              Int
+  productId           Int
+  quantity            Int
+
+  cart                cart            @relation(fields: [cartId], references: [id])
+  product             product         @relation(fields: [productId], references: [id])
+
+  @@id([cartId, productId])
 }
 
 //성별
