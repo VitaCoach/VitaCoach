@@ -1,8 +1,8 @@
 /**
  * @swagger
  * tags:
- *   name: Counsel
- *   description: API for counsel related operations
+ *   - name: Counsel
+ *     description: 상담과 관련된 모든 API
  */
 
 /**
@@ -47,7 +47,7 @@
  *                     type: string
  *                     example: "건강기능 식품계의 나야, 들기름!"
  *                   imageUrl:
- *                     type: String
+ *                     type: string
  *                     example: "https://randomuser.me/api/portraits/women/65.jpg"
  *       400:
  *         description: 잘못된 요청 (type이 제공되지 않음)
@@ -57,7 +57,7 @@
 
 /**
  * @swagger
- * /findExpert:
+ * /api/counsel/findExpert:
  *   get:
  *     summary: 전문가 찾기
  *     tags: [Expert]

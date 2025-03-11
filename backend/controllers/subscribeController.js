@@ -48,7 +48,27 @@ const selectPlan = (req, res, next) => {
     }
 };
 
+/**
+ * 마이 프로필
+ */
+const myProfile = async(req, res, next) => {
+    try{
+        const userId = req.user.userId;
+        //로그인 되어있지 않으면
+        if(!userId){
+            const error = new Error('Invalid User');
+            error.statusCode = 401;
+            return next(error);
+        }
+        const myInfo = await userService.getMyInfo(userId);
+        res.status(200).json(myInfo);
+    }catch(error){
+        next(error);
+    }
+};
+
 module.exports = {
     getSubscriptionStatus,
-    selectPlan
+    selectPlan,
+    myProfile
 };
