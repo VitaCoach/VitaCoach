@@ -81,10 +81,24 @@ const getMyCounsel = async (req, res, next) => {
   }
 };
 
+/**
+ * 전문가 이름으로 찾기
+ */
+const findExpert = async(req, res, next) => {
+  const name = req.query;
+  try{
+    const foundExpert = await counselService.findExpertByName(name);
+    res.status(200).json(foundExpert);
+  }catch(error){
+    next(error);
+  }
+};
+
 module.exports = {
   getExpertList,
   counselRegi,
   cancelCounsel,
   getMyCounsel,
   getExpertInfo,
+  findExper
 };

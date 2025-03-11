@@ -18,4 +18,7 @@ router.get('/myCounsel', counselController.getMyCounsel);
 //전문가 상세 정보
 router.get('/expertInfo/:id', counselController.getExpertInfo);
 
+//전문가 찾기
+router.get('/findExpert', counselController.findExpert);
+
 module.exports = router;
