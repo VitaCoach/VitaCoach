@@ -1,27 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-//전문가 생성 함수
-const generateExperts = async() => {
-    const experts = [
-        { name: '경포리 맛피자', type: 'NUTRITIONIST', rate: 4.5, intro: '건강기능 식품계의 나폴리 마피아!'},
-        { name: '에드워드 벨라', type: 'NUTRITIONIST', rate: 4.3, intro: '건강기능 식품계의 에드워드 리~'},
-        { name: '나야, 개기름', type: 'DOCTOR', rate: 4.1, intro: '건강기능 식품계의 나야, 들기름!'},
-        { name: '파브리', type: 'PHARMACIST', rate: 4.4, intro: '건강기능 식품계의 파브리!'}
-    ];
-
-    for(const expert of experts){
-        await prisma.expert.create({
-            data:{
-                name: expert.name,
-                type: expert.type,
-                rate: expert.rate,
-                intro: expert.intro
-            },
-        });
-    }
-};
-
 const generateCategories = async() => {
     const categories = [
         {category: '수면 및 스트레스 관리'},
@@ -44,78 +23,9 @@ const generateCategories = async() => {
     }
 };
 
-const generateProducts = async() => {
-    
-    const createdCategories = await prisma.category.findMany();
-
-    const products = [
-        {
-          name: '두충우슬추출복합물',
-          minLimit: 500,
-          maxLimit: 500,
-          scale: 'mg/일',
-          price: 20000, // 예시 가격
-          type: 'TYPE1', // 상품 종류
-          categories: [
-            createdCategories[1].id // 두 번째 카테고리 연결
-          ]
-        },
-        {
-          name: '비타민C 보충제',
-          minLimit: 1000,
-          maxLimit: 1000,
-          scale: 'mg/일',
-          price: 15000, // 예시 가격
-          type: 'TYPE2', // 상품 종류
-          categories: [
-            createdCategories[2].id // 세 번째 카테고리 연결
-          ]
-        },
-        {
-          name: '프로바이오틱스',
-          minLimit: 300,
-          maxLimit: 300,
-          scale: 'mg/일',
-          price: 18000, // 예시 가격
-          type: 'TYPE1', // 상품 종류
-          categories: [
-            createdCategories[0].id // 첫 번째 카테고리 연결
-          ]
-        }
-    ];
-    for(const product of products){
-        const createdProduct = await prisma.product.create({
-            data:{
-                name: product.name,
-                price: product.price,
-                maxLimit: product.maxLimit,
-                minLimit: product.minLimit,
-                scale: product.scale,
-                type: product.type
-            },
-        });
-        // product-category 관계 생성
-        for (const categoryId of product.categories) {
-            await prisma.productCategory.create({
-              data: {
-                product_id: createdProduct.id,
-                category_id: categoryId,
-              },
-            });
-        }
-    }
-};
-
-
 const generateMockData = async() => {
     try{
         //기존 데이터 삭제
-        await prisma.expert.deleteMany();
-        console.log('Deleted all experts');
-
-        await prisma.product.deleteMany();
-        console.log('Deleted all Products');
-
         await prisma.category.deleteMany();
         console.log('Deleted all Categories');
         
@@ -125,8 +35,6 @@ const generateMockData = async() => {
         
         //새 데이터 생성
         await generateCategories();
-        await generateExperts();
-        await generateProducts();
         console.log('Mock data generation completed successfully');
     }catch(error){
         console.log('Error generating mock data', error);
