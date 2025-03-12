@@ -100,5 +100,5 @@ module.exports = {
   cancelCounsel,
   getMyCounsel,
   getExpertInfo,
-  findExper
+  findExpert
 };

@@ -3,3 +3,6 @@ node_modules
 .env
 
 package-lock.json
+
+#파일 용량이 너무 큼
+Model/product_model
