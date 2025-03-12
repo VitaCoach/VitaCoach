@@ -34,9 +34,11 @@ model expert{
   id                  Int             @id @default(autoincrement())
   name                String        
   type                ExpertType      //전문가 타입
-  rate                Int             //평점
+  rate                Float           //평점
   intro               String          //소개
+  categoryId          Int
 
+  category            category        @relation(fields: [categoryId], references: [id])
   counsel             counsel[]       //전문가:상담 = 1:N
 }
 
@@ -71,7 +73,8 @@ model product{
 model category{
   id                  Int             @id @default(autoincrement())
   category            String
-
+  
+  expert              expert[]              //전문가:카테고리 = N:1
   productCategory     productCategory[]     //상품 : 기능 = M:N
 }
 
