@@ -12,7 +12,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 app = FastAPI()
 
 # 데이터 로드
-product_data = pd.read_excel('C://Users//dbwld//ForModel//products2.xlsx')
+product_data = pd.read_excel('C://Users//dbwld//ForModel//products2.xlsx') #올바른 경로로 수정
 
 # 모델 로드
 model = SentenceTransformer("C:/Users/dbwld/ForModel/product_model")  # 올바른 경로로 수정
