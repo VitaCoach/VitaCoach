@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+//기능 카테고리 생성함수
 const generateCategories = async() => {
     const categories = [
         {category: '수면 및 스트레스 관리'},
