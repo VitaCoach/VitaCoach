@@ -59,9 +59,11 @@ model product{
   id                  Int             @id @default(autoincrement())
   name                String
   price               Int
-  maxLimit            Int             //일일 섭취량 상한
-  minLimit            Int             //일일 섭취량 하한
+  maxLimit            Float?          //일일 섭취량 상한
+  minLimit            Float?          //일일 섭취량 하한
   scale               String          //단위
+  caution             String          //섭취 주의사항
+  description         String          //주요 기능
   type                ProductType     //상품 종류
 
   productCategory     productCategory[]

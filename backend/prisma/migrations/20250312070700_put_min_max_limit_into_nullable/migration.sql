@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "product" ALTER COLUMN "maxLimit" DROP NOT NULL,
+ALTER COLUMN "minLimit" DROP NOT NULL;
