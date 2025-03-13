@@ -1,4 +1,5 @@
 const productService = require('../services/productService');
+const kakaoService = require('../services/kakaoService');
 
 /**
  * 특정 기능에 속하는 제품 리스트 가져오기
@@ -7,7 +8,18 @@ const getProductList = async(req, res, next) => {
     const category = parseInt(req.params.category, 10);
     try{
         const productList = await productService.getCategoryProduct(category);
-        res.status(200).json(productList);
+        
+        //이미지 포함한 리스트
+        const formattedProductList = [];
+
+        for(const product of productList){
+            formattedProductList.push({
+                ...product.product,
+                image: await kakaoService.getImage(product.product.name)
+            });
+        };
+        
+        res.status(200).json(formattedProductList);
     }catch(error){
         next(error);
     }
@@ -20,7 +32,20 @@ const getProductInfo = async(req, res, next) => {
     const productId = parseInt(req.params.productId, 10);
     try{
         const productInfo = await productService.getProductInfo(productId);
-        res.status(200).json(productInfo);
+
+        if (!productInfo) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+        const blogs = await kakaoService.getBlogs(productInfo.name);
+
+        //블로그 포함
+        const formattedProduct = [{
+            ...productInfo,
+            blogs: blogs,
+        }];
+
+        console.log(formattedProduct);
+        res.status(200).json(formattedProduct);
     }catch(error){
         next(error);
     }

@@ -7,12 +7,16 @@ const prisma = new PrismaClient();
 const getCategoryProduct = async(category) => {
     const categoryProductList = await prisma.productCategory.findMany({
         where:{category_id: category},
-        include:{product: true},
-        select: {name: true, price: true, type: true},
+        select: {
+            product: {
+                select: {
+                    name: true,
+                    price: true,
+                    type: true
+                }
+            }
+        }
     });
-
-    //데이터 전처리 필요 & 이미지 api로 이미지 검색 필요
-
     return categoryProductList;
 };
 

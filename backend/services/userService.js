@@ -1,5 +1,4 @@
 const { PrismaClient } = require('@prisma/client');
-const { subscribe } = require('../app');
 const prisma = new PrismaClient();
 
 /**
