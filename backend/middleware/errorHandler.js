@@ -9,9 +9,9 @@ const errorHandler = (err, req, res, next) => {
       ? err.statusCode
       : 500;
 
-  res.status(err.statusCode).json({
-    error: err.message,
-    statusCode: err.statusCode || 500,
+  res.status(statusCode).json({
+    error: err.message || "Internal Server Error",
+    statusCode: statusCode,
   });
 };
 
