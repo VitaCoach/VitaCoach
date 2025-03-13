@@ -1,5 +1,4 @@
 # Service : VitaCoach
-* * *
 # 💊 건강기능식품 웹사이트 🌿
 ### 웹사이트 소개
 이 웹사이트는 가상 건강 기능 식품 판매 웹사이트입니다. 
@@ -12,7 +11,6 @@
 또한, **법적으로 인증된 정보**가 아닌 경우도 있을 수 있으므로, **해당 제품의 인증 여부**와 관련된 정확한 정보는 관련 법규나 인증 기관을 통해 확인해 주시기 바랍니다.
 
 # 👩🏻‍💻 Developer 
-* * *
 |FrontEnd|BackEnd|AI|
 |:--:|:--|--:|
 |박세진|박민서|유채빈|
@@ -21,10 +19,8 @@
 |[세진사마](https://github.com/sejin-coding)  |[밍짱](https://github.com/m2nsp)  |[챱](https://github.com/jiuumm)|
 
 # 🔧Tech Stack
-* * *
 
 # 🏠Architecture
-* * * 
 
 
 # 🔎사용된 오픈 소스 라이선스
