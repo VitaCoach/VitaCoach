@@ -15,7 +15,8 @@
 |박세진|박민서|유채빈|
 |✔️React|✔️node.js/Express|✔️fastAPI|
 |✔️typescript.js/vite | ✔️posstgreSQL  |✔️figma✔️기획|
-|[![Image](https://github.com/user-attachments/assets/f553dc25-df1d-4dce-a9f5-1456d8936fd0) width="200" height="400"](https://github.com/sejin-coding)  |[![Image](https://github.com/user-attachments/assets/b18ca491-f75d-4d59-a97b-9f1b38a756f9 width="200" height="400")](https://github.com/m2nsp)  |[![Image](https://github.com/user-attachments/assets/54c83a16-a73c-48a6-a9c2-5e58ab5439fd width="200" height="400")](https://github.com/jiuumm)|
+| <a href="https://github.com/sejin-coding"><img src="https://github.com/user-attachments/assets/f553dc25-df1d-4dce-a9f5-1456d8936fd0" width="200" height="400"></a> | <a href="https://github.com/m2nsp"><img src="https://github.com/user-attachments/assets/52fc3e55-a998-4155-8645-4278c2f7c915" width="200" height="400"></a> | <a href="https://github.com/jiuumm"><img src="https://github.com/user-attachments/assets/54c83a16-a73c-48a6-a9c2-5e58ab5439fd" width="200" height="400"></a> |
+
 # 💙UI/UX
 
 # 🔧Tech Stack
