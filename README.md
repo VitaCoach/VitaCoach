@@ -20,6 +20,7 @@
 |[세진사마](https://github.com/sejin-coding)  |[밍짱](https://github.com/m2nsp)  |[챱](https://github.com/jiuumm)|
 
 # 🔧Tech Stack
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1741919202759?alt=media&token=77034d71-83c3-4d4e-84e8-492353944497)](https://github.com/msdio/stackticon)
 
 # 🏠Architecture
 
