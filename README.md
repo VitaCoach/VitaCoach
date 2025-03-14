@@ -14,7 +14,7 @@
 |FrontEnd|BackEnd|AI|
 |:--:|:--:|:--:|
 |박세진|박민서|유채빈|
-|✔️React|✔️node.js/Express|✔️AI model|
+|✔️React|✔️node.js/Express|✔️fastAPI|
 |✔️typescript.js/vite | ✔️posstgreSQL  |✔️figma✔️기획|
 |[세진사마](https://github.com/sejin-coding)  |[밍짱](https://github.com/m2nsp)  |[챱](https://github.com/jiuumm)|
 
