@@ -25,7 +25,7 @@
 ![Image](https://github.com/user-attachments/assets/d1a63000-b7ab-4150-9288-577661bad1da)
 
 # 🏠Architecture
-![Image](https://github.com/user-attachments/assets/0e79f104-6127-4c07-81ee-3b269c37d30a)
+![Image](https://github.com/user-attachments/assets/4f0d4e8b-d286-4546-851c-61cacfe05b65)
 
 # 🔎사용된 오픈 소스 라이선스
 본 웹사이트에서 사용된 일부 모델은 **CC-BY-SA-4.0 라이선스** 하에 제공됩니다. 이 모델은 사용, 수정, 배포가 가능하지만, 다음 조건을 준수해야 합니다
