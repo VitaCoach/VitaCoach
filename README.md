@@ -1,6 +1,8 @@
 # 💊 Service : VitaCoach 🌿
 ### 웹사이트 소개
 이 웹사이트는 가상 건강 기능 식품 판매 웹사이트입니다. 
+![Blank Template](https://github.com/user-attachments/assets/355ec0c8-52a2-4752-92f6-c54c79653c38)
+
 ### 주요 기능
 - 🔍 사용자 증상(text)에 따른 맞춤 건강 기능 식품 추천 
 - 📊 제품 기능 및 섭취 주의사항 정보 제공
