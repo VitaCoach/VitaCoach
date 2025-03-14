@@ -12,7 +12,7 @@
 
 # 👩🏻‍💻 Developer 
 |FrontEnd|BackEnd|AI|
-|:--:|:--|--:|
+|:--:|:--:|:--:|
 |박세진|박민서|유채빈|
 |✔️React|✔️node.js/Express|✔️AI model|
 |✔️typescript.js/vite | ✔️posstgreSQL  |✔️figma✔️기획|
@@ -21,7 +21,7 @@
 # 🔧Tech Stack
 [![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1741919202759?alt=media&token=77034d71-83c3-4d4e-84e8-492353944497)](https://github.com/msdio/stackticon)
 
-#💽ERD
+# 💽ERD
 ![Image](https://github.com/user-attachments/assets/d1a63000-b7ab-4150-9288-577661bad1da)
 
 # 🏠Architecture
