@@ -11,18 +11,20 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 app = FastAPI()
 
-dataPath = "C://Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Data/products2.xlsx"
+dataPath = "C:\Users\Owner\Documents\GitHub\VitaCoach\backend\Data\products2.xlsx"
+#C://Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Data/products2.xlsx 민서언니 경로로
 
 # 데이터 로드
 product_data = pd.read_excel(dataPath)
 
 # 모델 로드
-model = SentenceTransformer("C://Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Model/product_model")  # 올바른 경로로 수정
+model = SentenceTransformer("C:\Users\Owner\Documents\GitHub\VitaCoach\backend\Data\products2.xlsx")  # 올바른 경로로 수정
 
 # 건강기능식품 추천 함수
 def find_most_similar(user_input: str):
     # top_k를 2로 고정
     top_k = 2
+    
     
     # 1. 전체 주요 기능 데이터 임베딩
     corpus = product_data['주요 기능'].tolist()
