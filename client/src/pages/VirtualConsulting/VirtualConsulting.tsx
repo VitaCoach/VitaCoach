@@ -27,13 +27,24 @@ const VirtualConsulting: React.FC = () => {
       console.log(`요청 중: /api/counsel/list?type=${activeTab}`);
       console.log("포함된 토큰:", token);
 
-      const response = await fetch(`/api/counsel/list?type=${activeTab}`, {
+      // ✅ requestOptions 변수 추가
+      const requestOptions = {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      });
+      };
+
+      console.log("🔍 보낼 요청 정보:", `/api/counsel/list?type=${activeTab}`);
+      console.log("📝 요청 헤더:", requestOptions.headers);
+
+      const response = await fetch(
+        `/api/counsel/list?type=${activeTab}`,
+        requestOptions
+      );
+
+      console.log("🔍 서버 응답 상태 코드:", response.status);
 
       if (!response.ok) {
         throw new Error(`서버 응답 오류: ${response.status}`);
