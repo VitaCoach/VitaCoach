@@ -2,13 +2,13 @@
 /**
  * @swagger
  * tags:
- *   name: Product
+ *   name: Products
  *   description: API for product related operations (결제, 장바구니, 상품)
  */
 
 /**
  * @swagger
- * /api/products/{category}:
+ * /api/product/{category}:
  *   get:
  *     summary: 특정 카테고리의 제품 목록 조회
  *     description: 카테고리 ID를 바탕으로 제품 리스트와 해당 제품에 관련된 정보를 가져옵니다.
@@ -56,7 +56,7 @@
 
 /**
  * @swagger
- * /api/products/detail/{productId}:
+ * /api/product/detail/{productId}:
  *   get:
  *     summary: 제품 상세정보 조회
  *     tags: [Products]
@@ -139,7 +139,7 @@
 
 /**
  * @swagger
- * /api/products/buy:
+ * /api/product/buy:
  *   post:
  *     summary: 제품 구매
  *     tags: [Products]
@@ -161,7 +161,7 @@
 
 /**
  * @swagger
- * /api/products/cancel:
+ * /api/product/cancel:
  *   post:
  *     summary: 제품 결제 취소
  *     tags: [Products]
@@ -183,7 +183,7 @@
 
 /**
  * @swagger
- * /api/products/purchasedProducts:
+ * /api/product/purchasedProducts:
  *   get:
  *     summary: 사용자가 구매한 상품 목록 조회
  *     tags: [Products]
@@ -194,7 +194,7 @@
 
 /**
  * @swagger
- * /api/products/cart:
+ * /api/product/cart:
  *   post:
  *     summary: 장바구니에 상품 추가
  *     tags: [Cart]
@@ -216,7 +216,7 @@
 
 /**
  * @swagger
- * /api/products/updateCart:
+ * /api/product/updateCart:
  *   patch:
  *     summary: 장바구니 상품 수량 업데이트
  *     tags: [Cart]
@@ -238,7 +238,7 @@
 
 /**
  * @swagger
- * /api/products/cart/{productId}:
+ * /api/product/cart/{productId}:
  *   delete:
  *     summary: 장바구니에서 상품 삭제
  *     tags: [Cart]

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // 전문가 타입 정의
 interface Expert {
@@ -16,6 +17,11 @@ const VirtualConsulting: React.FC = () => {
   const [filteredExperts, setFilteredExperts] = useState<Expert[]>([]);
   const [activeTab, setActiveTab] = useState<string>("NUTRITIONIST");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const navigate = useNavigate();
+
+  const handleExpertClick = (expert: Expert) => {
+    navigate(`/expert/${expert.id}`, { state: { imageUrl: expert.imageUrl } }); //동적 라우트 이동
+  };
 
   const fetchExperts = useCallback(async () => {
     try {
@@ -103,7 +109,10 @@ const VirtualConsulting: React.FC = () => {
       <ExpertList>
         {filteredExperts.length > 0 ? (
           filteredExperts.map((expert) => (
-            <ExpertCard key={expert.id}>
+            <ExpertCard
+              key={expert.id}
+              onClick={() => handleExpertClick(expert)}
+            >
               <ExpertImage src={expert.imageUrl} alt={expert.name} />
               <ExpertName>{expert.name}</ExpertName>
               <Rating>⭐ {expert.rate} out of 5</Rating>

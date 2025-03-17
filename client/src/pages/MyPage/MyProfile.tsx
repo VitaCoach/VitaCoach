@@ -1,47 +1,73 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import profileImage from "../../assets/profileImage.png"; // ✅ 기본 프로필 이미지 추가
 
 const MyProfile: React.FC = () => {
   const navigate = useNavigate();
-  const [subscription, setSubscription] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [profileImage, setProfileImage] = useState<string>(
-    "../../assets/profileImage.png"
-  );
+  const [profileImg, setProfileImg] = useState<string>(profileImage);
+  const [userData, setUserData] = useState<{
+    name: string;
+    phone: string;
+    subscription: string | null;
+  }>({
+    name: "",
+    phone: "",
+    subscription: null,
+  });
 
   useEffect(() => {
-    const fetchSubscriptionStatus = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/LoginPage");
+      return;
+    }
+
+    const fetchUserData = async () => {
       const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/LoginPage");
-        return;
-      }
+      console.log("저장된 토큰:", token); // 콘솔에서 토큰 확인
 
       try {
-        const response = await fetch("http://localhost:3000/api/sub/status", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "http://localhost:3000/api/sub/myprofile",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.status === 401) {
+          console.error("로그인 필요 (401 Unauthorized)");
           navigate("/LoginPage");
           return;
         }
 
+        if (!response.ok) {
+          console.error(
+            "사용자 정보 요청 실패:",
+            response.status,
+            response.statusText
+          );
+          return;
+        }
+
         const data = await response.json();
-        setSubscription(data.subscriptionLevel || null);
+        console.log("사용자 정보:", data);
+
+        setUserData({
+          name: data.name,
+          phone: data.phone,
+          subscription: data.subscribe,
+        });
       } catch (error) {
-        console.error("구독 상태 조회 오류:", error);
-      } finally {
-        setLoading(false);
+        console.error("사용자 정보 조회 오류:", error);
       }
     };
 
-    fetchSubscriptionStatus();
+    fetchUserData();
   }, [navigate]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,21 +76,19 @@ const MyProfile: React.FC = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         if (typeof reader.result === "string") {
-          setProfileImage(reader.result);
+          setProfileImg(reader.result);
         }
       };
       reader.readAsDataURL(file);
     }
   };
 
-  if (loading) return <LoadingText>로딩 중...</LoadingText>;
-
   return (
     <ProfileContainer>
       <ProfileCard>
         <ImageWrapper>
-          <ProfileImage src={profileImage} alt="Profile" />
-          <ImageUploadLabel htmlFor="file-upload">📷 변경</ImageUploadLabel>
+          <ProfileImage src={profileImg} alt="Profile" />
+          <ImageUploadLabel htmlFor="file-upload">사진 변경</ImageUploadLabel>
           <ImageUploadInput
             id="file-upload"
             type="file"
@@ -75,17 +99,17 @@ const MyProfile: React.FC = () => {
 
         <Form>
           <Label>이름</Label>
-          <Input type="text" placeholder="이름 입력" disabled />
+          <Input type="text" value={userData.name} disabled />
           <Label>연락처</Label>
-          <Input type="text" placeholder="연락처 입력" disabled />
+          <Input type="text" value={userData.phone} disabled />
         </Form>
 
         <SubscriptionSection>
           <Label>나의 구독</Label>
-          {subscription ? (
-            <SubscribedText>🎉 {subscription} 구독 중</SubscribedText>
+          {userData.subscription ? (
+            <SubscribedText>🎉 {userData.subscription} 구독 중</SubscribedText>
           ) : (
-            <SubscribeButton onClick={() => navigate("/UnsubscribedPage")}>
+            <SubscribeButton onClick={() => navigate("/SubscriptionPage")}>
               구독하러 가기
             </SubscribeButton>
           )}
@@ -104,6 +128,7 @@ const ProfileContainer = styled.div`
   height: 100vh;
   align-items: center;
   background: #f4f7fc;
+  margin-top: -80px;
 `;
 
 const ProfileCard = styled.div`
@@ -190,10 +215,4 @@ const SubscribeButton = styled.button`
   &:hover {
     background: #0056b3;
   }
-`;
-
-const LoadingText = styled.p`
-  text-align: center;
-  font-size: 18px;
-  margin-top: 20px;
 `;
