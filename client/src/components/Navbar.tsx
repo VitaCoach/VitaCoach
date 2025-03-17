@@ -1,9 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/logo.png"; //
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
+    !!localStorage.getItem("token")
+  ); // 초기값 설정
+
+  // 로그인 시 즉시 UI 반영
+  const handleLogin = () => {
+    setIsLoggedIn(true); // ✅ 상태 즉시 변경
+    navigate("/"); // 로그인 후 메인 페이지로 이동
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // 토큰 삭제 (로그아웃)
+    setIsLoggedIn(false);
+    alert("로그아웃 되었습니다.");
+    navigate("/"); // 메인 페이지로 이동
+  };
+
   return (
     <NavBar>
       <NavContainer>
@@ -14,7 +32,13 @@ const Navbar: React.FC = () => {
         </LogoLink>
         {/* 네비게이션 링크 (오른쪽 정렬) */}
         <NavLinks>
-          <NavItem to="/LoginPage">로그인</NavItem>
+          {isLoggedIn ? (
+            <NavButton onClick={handleLogout}>로그아웃</NavButton>
+          ) : (
+            <NavItem to="/LoginPage" onClick={handleLogin}>
+              로그인
+            </NavItem>
+          )}
           <NavItem to="/RegisterPage">회원 가입</NavItem>
           <NavItem to="/MyPage">마이 페이지</NavItem>
           <NavItem to="/cart">장바구니</NavItem>
@@ -83,4 +107,17 @@ const BrandName = styled.span`
   font-family: "Arial", sans-serif;
   text-transform: uppercase; 
   text-decoration: none;
+`;
+
+const NavButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #000000;
+  cursor: pointer;
+  transition: font-weight 0.3s ease-in-out;
+
+  &:hover {
+    font-weight: bold;
+  }
 `;

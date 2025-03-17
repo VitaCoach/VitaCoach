@@ -12,8 +12,8 @@ const SubNavbar: React.FC = () => {
           건강 기능 식품이란?
         </NavItem>
         <NavItem
-          to="/FeaturesPage"
-          $active={location.pathname === "/FeaturesPage"}
+          to="/category/1"
+          $active={location.pathname.startsWith("/category/")}
         >
           기능별 제품
         </NavItem>
