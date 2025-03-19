@@ -4,21 +4,21 @@ const prisma = new PrismaClient();
 /**
  * 기능별 제품 리스트
  */
-const getCategoryProduct = async (category) => {
-  const categoryProductList = await prisma.productCategory.findMany({
-    where: { category_id: category },
-    select: {
-      product: {
+const getCategoryProduct = async(category) => {
+    const categoryProductList = await prisma.productCategory.findMany({
+        where:{category_id: category},
         select: {
-          id: true,
-          name: true,
-          price: true,
-          type: true,
-        },
-      },
-    },
-  });
-  return categoryProductList;
+            product: {
+                select: {
+                    id: true,
+                    name: true,
+                    price: true,
+                    type: true
+                }
+            }
+        }
+    });
+    return categoryProductList;
 };
 
 /**
