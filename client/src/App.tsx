@@ -13,6 +13,7 @@ import RegisterPage from "./pages/Login/RegisterPage.tsx";
 import MyPage from "./pages/MyPage/MyPage.tsx";
 import ExpertDetail from "./pages/VirtualConsulting/ExpertDetail.tsx";
 import CategoryProducts from "./pages/CategoryProducts/CategoryProducts.tsx";
+import ProductDetail from "./pages/CategoryProducts/ProductDetail.tsx";
 // import CartPage from './pages/CartPage';
 
 const App: React.FC = () => {
@@ -28,6 +29,7 @@ const App: React.FC = () => {
         <Route path="/expert/:id" element={<ExpertDetail />} />
         <Route path="/MyPage" element={<MyPage />} />
         <Route path="/category/:categoryId" element={<CategoryProducts />} />
+        <Route path="/product/:productId" element={<ProductDetail />} />
       </Routes>
     </Layout>
   );
