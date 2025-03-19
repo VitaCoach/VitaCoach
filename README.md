@@ -25,7 +25,8 @@
 [![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1741919202759?alt=media&token=77034d71-83c3-4d4e-84e8-492353944497)](https://github.com/msdio/stackticon)
 
 # 💽ERD
-![Image](https://github.com/user-attachments/assets/d1a63000-b7ab-4150-9288-577661bad1da)
+![VitaCoach](https://github.com/user-attachments/assets/f7ba985a-de9d-4ccf-ae4e-9eca4424e6dd)
+<a href="https://www.erdcloud.com/d/XvBNDyZkgqmFcH6dG">ERD Link</a>
 
 # 🏠Architecture
 ![Image](https://github.com/user-attachments/assets/4f0d4e8b-d286-4546-851c-61cacfe05b65)
