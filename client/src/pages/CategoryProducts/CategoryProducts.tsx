@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useNavigate, useParams } from "react-router-dom";
 
 const categoryMap: { [key: string]: number } = {
   "수면 및 스트레스 관리": 1,
@@ -20,6 +21,7 @@ const categoryMap: { [key: string]: number } = {
 
 // 제품 데이터 타입 정의
 interface Product {
+  id: number;
   name: string;
   price: number;
   type: string;
@@ -28,10 +30,22 @@ interface Product {
 
 // ✅ 컴포넌트 시작
 const CategoryProducts: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<number>(1); // 기본 선택된 카테고리
+  const { categoryId } = useParams<{ categoryId: string }>();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState<number>(
+    categoryId ? Number(categoryId) : 1
+  );
 
+  // ✅ URL의 categoryId가 변경될 때 상태 업데이트
+  useEffect(() => {
+    if (categoryId) {
+      setSelectedCategory(Number(categoryId));
+    }
+  }, [categoryId]);
+
+  // ✅ 카테고리별 제품 불러오기
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -63,6 +77,22 @@ const CategoryProducts: React.FC = () => {
     fetchProducts();
   }, [selectedCategory]);
 
+  // ✅ 카테고리 변경 시 URL도 업데이트
+  const handleCategoryChange = (id: number) => {
+    setSelectedCategory(id);
+    navigate(`/category/${id}`); // URL 업데이트
+  };
+
+  // ✅ 제품 상세 페이지로 이동 (올바른 ID 전달)
+  const handleProductClick = (product: Product) => {
+    console.log("🔥 클릭된 제품:", product);
+    if (!product.id) {
+      console.error("🚨 Product ID is missing!");
+      return;
+    }
+    navigate(`/product/${product.id}`, { state: { productId: product.id } });
+  };
+
   return (
     <Container>
       {/* ✅ 카테고리 사이드바 */}
@@ -72,13 +102,12 @@ const CategoryProducts: React.FC = () => {
           <CategoryItem
             key={id}
             selected={id === selectedCategory}
-            onClick={() => setSelectedCategory(id)}
+            onClick={() => handleCategoryChange(id)}
           >
             {id === selectedCategory ? "🔹" : "⚫"} {category}
           </CategoryItem>
         ))}
       </Sidebar>
-
       {/* ✅ 제품 리스트 */}
       <Content>
         <Title>🛍️ 기능별 제품</Title>
@@ -86,8 +115,12 @@ const CategoryProducts: React.FC = () => {
           <LoadingText>⏳ 제품 정보를 불러오는 중...</LoadingText>
         ) : products.length > 0 ? (
           <ProductGrid>
-            {products.map((product, index) => (
-              <ProductCard key={index}>
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                onClick={() => handleProductClick(product)}
+                style={{ cursor: "pointer" }}
+              >
                 <ProductImage src={product.image} alt={product.name} />
                 <ProductInfo>
                   <ProductName>{product.name}</ProductName>
@@ -132,7 +165,8 @@ const Sidebar = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-left: -100px;
+  margin-left: -300px;
+  margin-right: 100px;
 `;
 
 const SidebarTitle = styled.h3`
