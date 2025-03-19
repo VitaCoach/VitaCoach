@@ -90,7 +90,9 @@ const CategoryProducts: React.FC = () => {
       console.error("🚨 Product ID is missing!");
       return;
     }
-    navigate(`/product/${product.id}`, { state: { productId: product.id } });
+    navigate(`/product/${product.id}`, {
+      state: { productId: product.id, image: product.image },
+    });
   };
 
   return (

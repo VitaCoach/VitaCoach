@@ -4,6 +4,7 @@ import styled from "styled-components";
 import noRefundIcon from "../../assets/noRefund.png";
 import popularProductIcon from "../../assets/popularProduct.png";
 import freeDeliveryIcon from "../../assets/freeDelivery.png";
+import he from "he";
 
 interface ProductDetail {
   id: number;
@@ -16,7 +17,6 @@ interface ProductDetail {
   description: string;
   type: string;
   blogs: Blog[];
-  image: string;
 }
 
 interface Blog {
@@ -32,18 +32,32 @@ const ProductDetail: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
   const location = useLocation();
   const navigate = useNavigate();
-  const [product, setProduct] = useState<ProductDetail | null>(
-    location.state?.product || null
-  );
+  const [product, setProduct] = useState<ProductDetail | null>(null);
   const [loading, setLoading] = useState(!location.state?.product);
-  const [quantity, setQuantity] = useState<number>(1);
+  const [quantity, setQuantity] = useState<number>(0);
+  const productImage = location.state?.image;
+
+  const parsedProductId = productId
+    ? parseInt(productId, 10)
+    : location.state?.productId;
+
+  console.log("🔥 URL에서 받은 productId:", productId);
+  console.log(
+    "🔥 location.state에서 받은 productId:",
+    location.state?.productId
+  );
+  console.log("🔥 최종 사용 productId:", parsedProductId);
 
   // ✅ 제품 상세 정보 불러오기
   useEffect(() => {
-    if (!productId) return;
+    if (!parsedProductId) {
+      console.error("🚨 productId가 없음! API 요청을 중단합니다.");
+      return;
+    }
 
     const fetchProductDetail = async () => {
       try {
+        console.log("🔥 API 요청 중... productId:", parsedProductId);
         const token = localStorage.getItem("token");
         if (!token) {
           console.error("🚨 No token found! 사용자 인증이 필요합니다.");
@@ -51,7 +65,7 @@ const ProductDetail: React.FC = () => {
           return;
         }
 
-        const response = await fetch(`/api/product/detail/${productId}`, {
+        const response = await fetch(`/api/product/detail/${parsedProductId}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -63,23 +77,36 @@ const ProductDetail: React.FC = () => {
         }
 
         const data = await response.json();
-        setProduct(data);
+        console.log("✅ API 응답 데이터:", data);
+        // 🔥 여기서 강제로 상태를 업데이트하는 코드 추가
+        // 🔥 배열이면 첫 번째 요소만 사용하도록 설정
+        if (Array.isArray(data) && data.length > 0) {
+          setProduct(data[0]);
+          console.log(data[0]);
+        } else {
+          setProduct(data);
+        }
+
+        setQuantity(0);
       } catch (error) {
-        console.error(error);
+        console.error("❌ API 요청 중 오류 발생:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    if (!product) {
-      fetchProductDetail();
-    }
-  }, [productId, product, navigate]); // ✅ productId만 의존성으로 설정하여 불필요한 렌더링 방지
+    fetchProductDetail();
+  }, [parsedProductId, navigate]); // ✅ parsedProductId 변경 시 재요청
+
+  // ✅ `product` 상태 변화 확인
+  useEffect(() => {
+    console.log("🔥 최종 저장된 product 상태:", product);
+  }, [product]);
 
   // ✅ 제품 수량 초기화
   useEffect(() => {
     if (product) {
-      setQuantity(product.minLimit);
+      setQuantity(0);
     }
   }, [product]);
 
@@ -158,7 +185,7 @@ const ProductDetail: React.FC = () => {
   return (
     <Container>
       <ProductHeader>
-        <ProductImage src={product.image} alt={product.name} />
+        <ProductImage src={productImage} alt={product?.name} />
         <ProductInfo>
           <ProductTitle>{product.name}</ProductTitle>
           <ProductPrice>{product.price.toLocaleString()}원</ProductPrice>
@@ -201,17 +228,47 @@ const ProductDetail: React.FC = () => {
           <InfoItem>단위: {product.scale}</InfoItem>
         </InfoBox>
       </Section>
+      <Section>
+        <SectionTitle>📜 상품 설명</SectionTitle>
+        {product.description ? (
+          <Description>{product.description}</Description>
+        ) : (
+          <NoData>🚫 상품 설명이 없습니다.</NoData>
+        )}
+      </Section>
 
+      <Section>
+        <SectionTitle>⚠️ 주의사항</SectionTitle>
+        {product.caution ? (
+          <Caution>{product.caution}</Caution>
+        ) : (
+          <NoData>🚫 주의사항이 없습니다.</NoData>
+        )}
+      </Section>
       <Section>
         <SectionTitle>📰 관련 블로그</SectionTitle>
         {product.blogs.length > 0 ? (
           <BlogContainer>
             {product.blogs.map((blog) => (
               <BlogCard key={blog.url}>
-                <BlogThumbnail src={blog.thumbnail} alt={blog.title} />
+                <BlogThumbnail
+                  src={
+                    blog.thumbnail && blog.thumbnail.startsWith("http")
+                      ? blog.thumbnail
+                      : productImage
+                  }
+                  alt={he.decode(blog.title)}
+                />
+
                 <BlogContent>
-                  <BlogTitle>{blog.title}</BlogTitle>
-                  <BlogText>{blog.contents}</BlogText>
+                  <BlogTitle
+                    dangerouslySetInnerHTML={{ __html: he.decode(blog.title) }}
+                  />
+                  <BlogText
+                    dangerouslySetInnerHTML={{
+                      __html: he.decode(blog.contents),
+                    }}
+                  />
                 </BlogContent>
               </BlogCard>
             ))}
@@ -378,11 +435,6 @@ const InfoItem = styled.div`
   color: #333;
 `;
 
-const Description = styled.p`
-  font-size: 16px;
-  color: #333;
-`;
-
 // 아이콘 관련
 const IconsContainer = styled.div`
   display: flex;
@@ -404,11 +456,6 @@ const QuantityButton = styled.button`
   padding: 5px 10px;
 `;
 
-const Caution = styled.p`
-  font-size: 16px;
-  color: red;
-`;
-
 const QuantityDisplay = styled.span`
   width: 40px;
   height: 30px;
@@ -419,4 +466,14 @@ const QuantityDisplay = styled.span`
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
+`;
+
+const Caution = styled.p`
+  font-size: 16px;
+  color: red;
+`;
+
+const Description = styled.p`
+  font-size: 16px;
+  color: #333;
 `;
