@@ -110,11 +110,11 @@ const ProductDetail: React.FC = () => {
     }
   }, [product]);
 
-  // ✅ 수량 조절 핸들러
+  // ✅ 수량 조절 핸들러 수정 (1씩 증가/감소)
   const handleQuantityChange = (change: number) => {
     if (!product) return;
-    setQuantity((prev) =>
-      Math.max(product.minLimit, Math.min(prev + change, product.maxLimit))
+    setQuantity(
+      (prev) => Math.max(0, Math.min(prev + change, product.maxLimit)) // 0 이상 maxLimit 이하로 유지
     );
   };
 
@@ -135,7 +135,10 @@ const ProductDetail: React.FC = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ productId: product.id, quantity }),
+        body: JSON.stringify({
+          productId: product.id,
+          quantity: quantity > 0 ? quantity : 1,
+        }),
       });
 
       if (!response.ok) {
@@ -171,8 +174,7 @@ const ProductDetail: React.FC = () => {
       if (!response.ok) {
         throw new Error("구매 실패");
       }
-
-      navigate("/order/complete");
+      alert("구매하기 완료되었습니다!");
     } catch (error) {
       console.error(error);
       alert("오류가 발생했습니다. 다시 시도해주세요.");
@@ -233,16 +235,16 @@ const ProductDetail: React.FC = () => {
         {product.description ? (
           <Description>{product.description}</Description>
         ) : (
-          <NoData>🚫 상품 설명이 없습니다.</NoData>
+          <Description>🚫 상품 설명이 없습니다.</Description>
         )}
       </Section>
 
       <Section>
         <SectionTitle>⚠️ 주의사항</SectionTitle>
-        {product.caution ? (
+        {product.caution && product.caution.trim() !== "" ? (
           <Caution>{product.caution}</Caution>
         ) : (
-          <NoData>🚫 주의사항이 없습니다.</NoData>
+          <Caution>🚫 주의사항이 없습니다.</Caution>
         )}
       </Section>
       <Section>
@@ -285,9 +287,10 @@ export default ProductDetail;
 
 /* ✅ Styled Components */
 const Container = styled.div`
-  max-width: 900px;
+  max-width: 1000px;
   margin: 40px auto;
   padding: 20px;
+  border-radius: 10px;
 `;
 
 const LoadingText = styled.p`
@@ -306,63 +309,88 @@ const ErrorText = styled.p`
 
 const ProductHeader = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 const ProductImage = styled.img`
-  width: 250px;
-  height: 250px;
+  width: 280px;
+  height: 280px;
   object-fit: cover;
   border-radius: 10px;
+  border: 2px solid #ddd;
 `;
-
 const ProductInfo = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const ProductTitle = styled.h2`
   font-size: 28px;
   font-weight: bold;
   color: #003f73;
+  margin-bottom: 10px;
 `;
 
 const ProductPrice = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 10px 0;
+  font-size: 22px;
+  font-weight: bold;
+  color: #ff5722;
+  margin-bottom: 15px;
 `;
 
 const NoData = styled.p`
   text-align: center;
-  font-size: 18px;
-  color: #666;
-  margin-top: 20px;
+  font-size: 16px;
+  color: #999;
+  margin-top: 10px;
 `;
 
 const Section = styled.div`
   margin-top: 30px;
+  padding: 15px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const SectionTitle = styled.h3`
-  font-size: 22px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
   margin-bottom: 10px;
+  margin-top: 15px;
 `;
 
 const BlogContainer = styled.div`
+  margin-top: 30px;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
 `;
 
 const BlogCard = styled.div`
-  width: 250px;
+  width: 220px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 `;
 
 const BlogThumbnail = styled.img`
   width: 100%;
-  height: 150px;
+  height: 130px;
   object-fit: cover;
+  border-bottom: 2px solid #ddd;
 `;
 
 const BlogContent = styled.div`
@@ -370,8 +398,9 @@ const BlogContent = styled.div`
 `;
 
 const BlogTitle = styled.h4`
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
+  margin-bottom: 5px;
 `;
 
 const BlogText = styled.p`
@@ -380,23 +409,27 @@ const BlogText = styled.p`
 `;
 
 const QuantitySelector = styled.div`
-  margin-top: 10px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  margin-top: 15px;
 
   input {
     width: 60px;
     padding: 5px;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
     text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
   }
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 12px;
+  margin-top: 20px;
 `;
 
 const CartButton = styled.button`
@@ -406,6 +439,9 @@ const CartButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.2s;
 
   &:hover {
     background: #0056b3;
@@ -419,6 +455,9 @@ const BuyButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.2s;
 
   &:hover {
     background: #e68900;
@@ -428,42 +467,55 @@ const BuyButton = styled.button`
 const InfoBox = styled.div`
   display: flex;
   gap: 20px;
+  font-size: 16px;
 `;
 
 const InfoItem = styled.div`
-  font-size: 16px;
+  margin-top: 15px;
   color: #333;
 `;
 
-// 아이콘 관련
 const IconsContainer = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 15px;
+  margin-bottom: 15px;
 `;
 
 const IconWrapper = styled.div`
   display: flex;
   align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: #666;
 `;
 
 const Icon = styled.img`
-  width: 30px;
+  width: 60px;
 `;
 
 const QuantityButton = styled.button`
   background: #ccc;
   border: none;
-  padding: 5px 10px;
+  padding: 8px 12px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background: #bbb;
+  }
 `;
 
 const QuantityDisplay = styled.span`
-  width: 40px;
-  height: 30px;
-  line-height: 30px;
+  width: 50px;
+  height: 35px;
+  line-height: 35px;
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
 `;
@@ -471,9 +523,11 @@ const QuantityDisplay = styled.span`
 const Caution = styled.p`
   font-size: 16px;
   color: red;
+  margin-top: 15px;
 `;
 
 const Description = styled.p`
   font-size: 16px;
   color: #333;
+  margin-top: 15px;
 `;

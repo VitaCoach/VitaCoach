@@ -17,12 +17,21 @@ const SubNavbar: React.FC = () => {
         >
           기능별 제품
         </NavItem>
-        <NavItem to="/category3" $active={location.pathname === "/category3"}>
+        <NavItem
+          to="/RecommendPage"
+          $active={
+            location.pathname === "/RecommendPage" ||
+            location.pathname === "/recommend-result"
+          }
+        >
           추천해주세요!
         </NavItem>
         <NavItem
           to="/VirtualConsulting"
-          $active={location.pathname === "/VirtualConsulting"}
+          $active={
+            location.pathname === "/VirtualConsulting" ||
+            location.pathname.startsWith("/expert/")
+          }
         >
           비대면 상담
         </NavItem>

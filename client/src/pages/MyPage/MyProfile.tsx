@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import profileImage from "../../assets/profileImage.png"; // ✅ 기본 프로필 이미지 추가
 
+
 const MyProfile: React.FC = () => {
   const navigate = useNavigate();
   const [profileImg, setProfileImg] = useState<string>(profileImage);
@@ -128,7 +129,7 @@ const ProfileContainer = styled.div`
   height: 100vh;
   align-items: center;
   background: #f4f7fc;
-  margin-top: -80px;
+  margin-top: -120px;
 `;
 
 const ProfileCard = styled.div`

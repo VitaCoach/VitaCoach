@@ -7,14 +7,14 @@ import VirtualConsulting from "./pages/VirtualConsulting/VirtualConsulting.tsx";
 import PromotionPage from "./pages/Promotion/PromotionPage.tsx";
 import LoginPage from "./pages/Login/LoginPage.tsx";
 import RegisterPage from "./pages/Login/RegisterPage.tsx";
-// import BlogsPage from './pages/BlogsPage';
-// import LoginPage from './pages/LoginPage';
-// import RegisterPage from './pages/RegisterPage';
 import MyPage from "./pages/MyPage/MyPage.tsx";
 import ExpertDetail from "./pages/VirtualConsulting/ExpertDetail.tsx";
 import CategoryProducts from "./pages/CategoryProducts/CategoryProducts.tsx";
 import ProductDetail from "./pages/CategoryProducts/ProductDetail.tsx";
-// import CartPage from './pages/CartPage';
+import RecommendPage from "./pages/ModelRecommendation/RecommendPage.tsx";
+import RecommendResult from "./pages/ModelRecommendation/RecommendResult.tsx";
+import UnsubscribedPage from "./pages/Subscription/UnsubscribedPage.tsx";
+import SubscribedPage from "./pages/Subscription/SubscribedPage.tsx";
 
 const App: React.FC = () => {
   return (
@@ -30,6 +30,10 @@ const App: React.FC = () => {
         <Route path="/MyPage" element={<MyPage />} />
         <Route path="/category/:categoryId" element={<CategoryProducts />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
+        <Route path="/RecommendPage" element={<RecommendPage />} />
+        <Route path="/recommend-result" element={<RecommendResult />} />
+        <Route path="/UnsubscribedPage" element={<UnsubscribedPage />} />
+        <Route path="/SubscribedPage" element={<SubscribedPage />} />
       </Routes>
     </Layout>
   );

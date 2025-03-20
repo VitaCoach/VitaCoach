@@ -8,9 +8,11 @@
     "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
     "start:client": "cd client && npm run dev",
     "start:server": "cd backend && npm start"
-    
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "he": "^1.2.0"
+  }
 }
