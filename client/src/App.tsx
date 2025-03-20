@@ -15,6 +15,9 @@ import RecommendPage from "./pages/ModelRecommendation/RecommendPage.tsx";
 import RecommendResult from "./pages/ModelRecommendation/RecommendResult.tsx";
 import UnsubscribedPage from "./pages/Subscription/UnsubscribedPage.tsx";
 import SubscribedPage from "./pages/Subscription/SubscribedPage.tsx";
+import MyProfile from "./pages/MyPage/MyProfile.tsx";
+import PaidInfo from "./pages/MyPage/PaidInfo.tsx";
+import BookedConsulting from "./pages/MyPage/BookedConsulting.tsx";
 
 const App: React.FC = () => {
   return (
@@ -27,7 +30,12 @@ const App: React.FC = () => {
         <Route path="/RegisterPage" element={<RegisterPage />} />
         <Route path="/VirtualConsulting" element={<VirtualConsulting />} />
         <Route path="/expert/:id" element={<ExpertDetail />} />
-        <Route path="/MyPage" element={<MyPage />} />
+        {/* <Route path="/mypage/:tab" element={<MyPage />} /> */}
+        <Route path="/mypage" element={<MyPage />}>
+          <Route path="profile" element={<MyProfile />} />
+          <Route path="payment" element={<PaidInfo />} />
+          <Route path="consulting" element={<BookedConsulting />} />
+        </Route>
         <Route path="/category/:categoryId" element={<CategoryProducts />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
         <Route path="/RecommendPage" element={<RecommendPage />} />

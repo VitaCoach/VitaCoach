@@ -5,6 +5,12 @@ const prisma = new PrismaClient();
  * 기능별 제품 리스트
  */
 const getCategoryProduct = async (category) => {
+  console.log("전달된 category 값:", category); // category 값 확인
+
+  if (!category) {
+    throw new Error("category_id 값이 없습니다.");
+  }
+
   const categoryProductList = await prisma.productCategory.findMany({
     where: { category_id: category },
     select: {

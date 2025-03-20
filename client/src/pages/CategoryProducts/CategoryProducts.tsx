@@ -40,6 +40,7 @@ const CategoryProducts: React.FC = () => {
 
   // ✅ URL의 categoryId가 변경될 때 상태 업데이트
   useEffect(() => {
+    console.log("📌 URL에서 받은 categoryId:", categoryId);
     if (categoryId) {
       setSelectedCategory(Number(categoryId));
     }
@@ -55,6 +56,9 @@ const CategoryProducts: React.FC = () => {
           console.error("🚨 No token found! 사용자 인증이 필요합니다.");
           return;
         }
+
+        console.log("API 요청하는 category_id:", selectedCategory);
+
         const response = await fetch(`/api/product/${selectedCategory}`, {
           method: "GET",
           headers: {
@@ -94,6 +98,65 @@ const CategoryProducts: React.FC = () => {
       state: { productId: product.id, image: product.image },
     });
   };
+  const handleAddToCart = async (
+    event: React.MouseEvent,
+    productId: number
+  ) => {
+    event.stopPropagation();
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        navigate("/login");
+        return;
+      }
+
+      const response = await fetch("/api/product/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ productId, quantity: 1 }), // 기본 수량 1
+      });
+
+      if (!response.ok) {
+        throw new Error("장바구니 추가 실패");
+      }
+      alert("🛒 장바구니에 추가되었습니다!");
+    } catch (error) {
+      console.error("❌ 장바구니 추가 오류:", error);
+      alert("오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  };
+  const handleBuyNow = async (event: React.MouseEvent, productId: number) => {
+    event.stopPropagation();
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        navigate("/login");
+        return;
+      }
+
+      const response = await fetch("/api/product/buy", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ productId, quantity: 1 }), // 기본 수량 1
+      });
+
+      if (!response.ok) {
+        throw new Error("구매 실패");
+      }
+      alert("🛍️ 구매가 완료되었습니다!");
+    } catch (error) {
+      console.error("❌ 구매 오류:", error);
+      alert("오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  };
 
   return (
     <Container>
@@ -130,8 +193,12 @@ const CategoryProducts: React.FC = () => {
                     {product.price.toLocaleString()}원
                   </ProductPrice>
                   <ButtonGroup>
-                    <CartButton>🛒 장바구니 담기</CartButton>
-                    <BuyButton>🛍️ 구매하기</BuyButton>
+                    <CartButton onClick={(e) => handleAddToCart(e, product.id)}>
+                      🛒 장바구니 담기
+                    </CartButton>
+                    <BuyButton onClick={(e) => handleBuyNow(e, product.id)}>
+                      🛍️ 구매하기
+                    </BuyButton>
                   </ButtonGroup>
                 </ProductInfo>
               </ProductCard>
