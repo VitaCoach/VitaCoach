@@ -26,6 +26,7 @@ app.add_middleware(
 class PredictRequest(BaseModel):
     user_input: str  # JSON body에서 'user_input' 필드를 기대함
 
+
 dataPath = "C:/Users/Owner/Documents/GitHub/VitaCoach/backend/Data/products2.xlsx"
 #C://Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Data/products2.xlsx 민서언니 경로
 
@@ -33,6 +34,7 @@ dataPath = "C:/Users/Owner/Documents/GitHub/VitaCoach/backend/Data/products2.xls
 product_data = pd.read_excel(dataPath)
 
 # 모델 로드
+# 민서 경로 C:/Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Model/product_model
 model = SentenceTransformer("C:/Users/Owner/Documents/GitHub/VitaCoach/backend/Model/product_model")  # 올바른 경로로 수정
 
 # 건강기능식품 추천 함수

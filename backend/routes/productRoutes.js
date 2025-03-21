@@ -15,9 +15,6 @@ router.post('/buy', productController.buyProduct);
 //제품 구매 취소 - 결제 후 취소
 router.post('/cancel', productController.cancelPayment);
 
-//구매 제품 목록보기
-router.get('/purchasedProducts', productController.getPurchasedList);
-
 //장바구니 추가
 router.post('/cart', productController.addCart);
 

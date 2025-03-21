@@ -8,7 +8,8 @@ const getCategoryProduct = async (category) => {
   console.log("전달된 category 값:", category); // category 값 확인
 
   if (!category) {
-    throw new Error("category_id 값이 없습니다.");
+    category = 1;
+    // throw new Error("category_id 값이 없습니다.");
   }
 
   const categoryProductList = await prisma.productCategory.findMany({
@@ -84,18 +85,6 @@ const cancelPaymentProduct = async (orderId, productId) => {
   }
 };
 
-/**
- * 사용자가 구매한 상품 목록
- */
-const getPurchasedProducts = async (userId) => {
-  const purchasedProducts = await prisma.order.findMany({
-    where: {
-      buyer: userId,
-      status: OrderStatus.SUCCEEDED,
-    },
-  });
-  return purchasedProducts;
-};
 
 /**
  * 장바구니에 상품 등록
@@ -192,7 +181,6 @@ module.exports = {
   getCategoryProduct,
   getProductInfo,
   buyProduct,
-  getPurchasedProducts,
   addProductCart,
   deleteProductCart,
   updateProductQuantityCart,

@@ -23,7 +23,7 @@ const PaidInfo: React.FC = () => {
         }
 
         const response = await fetch(
-          "http://localhost:3000/api/product/purchasedProducts",
+          "http://localhost:3000/api/order/purchasedProducts",
           {
             method: "GET",
             headers: {
