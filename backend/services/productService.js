@@ -90,13 +90,60 @@ const cancelPaymentProduct = async (orderId, productId) => {
  * 장바구니에 상품 등록
  */
 const addProductCart = async (userId, productId, quantity) => {
-  await prisma.cart.create({
-    data: {
-      owner: userId,
-      cartItem: productId,
-      quantity: quantity,
-    },
-  });
+  try {
+    // ✅ 1. 유저의 장바구니(cart) 찾기
+    let cart = await prisma.cart.findUnique({
+      where: { owner: userId },
+    });
+
+    // ✅ 2. 장바구니가 없으면 새로 생성
+    if (!cart) {
+      cart = await prisma.cart.create({
+        data: { owner: userId },
+      });
+    }
+
+    // ✅ 3. cartId 가져오기
+    const cartId = cart.id; // 🔥 여기서 cartId를 Int로 가져옴
+
+    // ✅ 4. 같은 상품이 장바구니에 있는지 확인
+    const existingCartItem = await prisma.cartItem.findUnique({
+      where: {
+        cartId_productId: {
+          cartId: cartId, // 🔥 Int 타입 사용
+          productId: productId,
+        },
+      },
+    });
+
+    if (existingCartItem) {
+      // 5. 이미 장바구니에 있는 상품이면 수량 업데이트
+      await prisma.cartItem.update({
+        where: {
+          cartId_productId: {
+            cartId: cartId, // Int 타입 사용
+            productId: productId,
+          },
+        },
+        data: {
+          quantity: { increment: quantity }, // 수량 증가
+        },
+      });
+    } else {
+      // 6. 장바구니에 새로운 상품 추가
+      await prisma.cartItem.create({
+        data: {
+          cartId: cartId, // Int 타입 사용
+          productId: productId,
+          quantity: quantity,
+        },
+      });
+    }
+
+    console.log("장바구니 추가 완료!");
+  } catch (error) {
+    console.error("장바구니 추가 중 오류 발생:", error);
+  }
 };
 
 /**

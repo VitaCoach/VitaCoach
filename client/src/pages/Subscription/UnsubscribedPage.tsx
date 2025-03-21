@@ -75,7 +75,7 @@ const Title = styled.h2`
   font-size: 32px;
   color: #2c3e50;
   font-weight: 900;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 `;
 
 const PlansGrid = styled.div`

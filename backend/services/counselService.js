@@ -32,7 +32,7 @@ const getExpertInfo = async (expertId) => {
 /**
  * 이름으로 해당 전문가 찾기
  */
-const findExpertByName = async(name) => {
+const findExpertByName = async (name) => {
   const foundExepert = await prisma.expert.findMany({
     where: { name: name },
   });
@@ -42,8 +42,12 @@ const findExpertByName = async(name) => {
 /**
  * 전문가, 사용자 상담 목록에 등록된 상담 추가하기
  */
-const registerCounsel = async(userId, expertId, reservationDateObj, reservationTimeObj) => {
-  
+const registerCounsel = async (
+  userId,
+  expertId,
+  reservationDateObj,
+  reservationTimeObj
+) => {
   //사용자와 전문가가 존재하는지 확인
 
   const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -87,6 +91,7 @@ const getReservedCounsels = async (userId) => {
 
   for (const counsel of reservedCounsels) {
     formattedReservedCounsel.push({
+      id: counsel.id,
       counselor: counsel.expert.name,
       reservationDate: counsel.reservation_date,
       reservationTime: counsel.reservation_time,

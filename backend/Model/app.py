@@ -3,6 +3,8 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 from fastapi.responses import FileResponse
 import os
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 # 한국어 출력 가능하게끔
 import sys
@@ -24,15 +26,16 @@ app.add_middleware(
 class PredictRequest(BaseModel):
     user_input: str  # JSON body에서 'user_input' 필드를 기대함
 
-dataPath = 'C://Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Data/products2.xlsx'
+
+dataPath = "C:/Users/Owner/Documents/GitHub/VitaCoach/backend/Data/products2.xlsx"
 #C://Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Data/products2.xlsx 민서언니 경로
 
 # 데이터 로드
 product_data = pd.read_excel(dataPath)
 
 # 모델 로드
-model = SentenceTransformer("C:/Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Model/product_model")  # 올바른 경로로 수정
-# 세진 경로 C:\Users\Owner\Documents\GitHub\VitaCoach\backend\Data\products2.xlsx
+# 민서 경로 C:/Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Model/product_model
+model = SentenceTransformer("C:/Users/Owner/Documents/GitHub/VitaCoach/backend/Model/product_model")  # 올바른 경로로 수정
 
 # 건강기능식품 추천 함수
 def find_most_similar(user_input: str):
@@ -57,7 +60,7 @@ def find_most_similar(user_input: str):
         top_results.append({
             '품목명': product_data.iloc[idx]['품목명'],
             '종류': product_data.iloc[idx]['종류'],
-            '주요 기능': corpus[idx],
+            '주요기능': corpus[idx],
             '유사도': similarities[idx].item(),
         })
 
@@ -73,7 +76,7 @@ def read_root():
 
 # 건강기능식품 추천 API
 @app.post("/predict")
-def predict(user_input: str):
-    # 건강기능식품 추천 결과를 반환
-    result = find_most_similar(user_input)
+def predict(request: PredictRequest):
+    user_input = request.user_input  # JSON에서 데이터 가져오기
+    result = find_most_similar(user_input)  # 추천 결과 반환
     return {"results": result}

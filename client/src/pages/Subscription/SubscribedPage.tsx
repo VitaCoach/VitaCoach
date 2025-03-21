@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const SubscribedPage: React.FC = () => {
+  const navigate = useNavigate(); // ✅ 페이지 이동을 위한 navigate 추가
+
   return (
     <Container>
       <Title>
@@ -9,7 +12,9 @@ const SubscribedPage: React.FC = () => {
         <br />
         혜택을 마음껏 누리세요!
       </Title>
-      <ChangeSubscriptionButton>구독 변경</ChangeSubscriptionButton>
+      <ChangeSubscriptionButton onClick={() => navigate("/UnsubscribedPage")}>
+        구독 변경
+      </ChangeSubscriptionButton>
       <BenefitsGrid>
         {benefits.map((benefit, index) => (
           <BenefitCard key={index}>
