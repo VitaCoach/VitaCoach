@@ -52,19 +52,6 @@ const getProductInfo = async(req, res, next) => {
 };
 
 /**
- *구매한 상품 목록 
- */
-const getPurchasedList = async(req, res, next) => {
-    const userId = req.user.userId;
-    try{
-        const purchasedList = await productService.getPurchasedProducts(userId);
-        res.status(200).json(purchasedList);
-    }catch(error){
-        next(error);
-    }
-};
-
-/**
  * 제품 구매 등록
  */
 const buyProduct = async(req, res, next) => {
@@ -134,12 +121,11 @@ const deleteCart = async(req, res, next) => {
 };
 
 module.exports = {
-    getProductList,
-    getProductInfo,
-    getPurchasedList,
-    buyProduct,
-    addCart,
-    updateCart,
-    deleteCart,
-    cancelPayment
-}
+  getProductList,
+  getProductInfo,
+  buyProduct,
+  addCart,
+  updateCart,
+  deleteCart,
+  cancelPayment,
+};

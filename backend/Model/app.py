@@ -11,14 +11,28 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 app = FastAPI()
 
-dataPath = "C:\Users\Owner\Documents\GitHub\VitaCoach\backend\Data\products2.xlsx"
-#C://Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Data/products2.xlsx 민서언니 경로로
+# CORS 설정
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 모든 도메인에서 요청 허용 (보안 문제로 배포 시엔 특정 도메인만 허용해야 함)
+    allow_credentials=True,
+    allow_methods=["*"],  # 모든 HTTP 메서드 허용
+    allow_headers=["*"],  # 모든 HTTP 헤더 허용
+)
+
+# Pydantic 모델 정의
+class PredictRequest(BaseModel):
+    user_input: str  # JSON body에서 'user_input' 필드를 기대함
+
+dataPath = 'C://Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Data/products2.xlsx'
+#C://Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Data/products2.xlsx 민서언니 경로
 
 # 데이터 로드
 product_data = pd.read_excel(dataPath)
 
 # 모델 로드
-model = SentenceTransformer("C:\Users\Owner\Documents\GitHub\VitaCoach\backend\Data\products2.xlsx")  # 올바른 경로로 수정
+model = SentenceTransformer("C:/Users/mini0/OneDrive/바탕 화면/VitaCoach/backend/Model/product_model")  # 올바른 경로로 수정
+# 세진 경로 C:\Users\Owner\Documents\GitHub\VitaCoach\backend\Data\products2.xlsx
 
 # 건강기능식품 추천 함수
 def find_most_similar(user_input: str):
